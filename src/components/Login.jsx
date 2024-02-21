@@ -2,7 +2,8 @@ import { useState } from "react"
 import { icon } from "../constants"
 import { Input } from '../ui'
 import { useDispatch, useSelector } from "react-redux"
-import { loginUserStart } from "../slice/auth"
+import { signUserStart, signUserSuccess, signUserFailure } from "../slice/auth"
+import AuthService from "../service/auth"
 
 function Login() {
   const [email, setEmail] = useState('')
@@ -10,9 +11,17 @@ function Login() {
   const dispatch = useDispatch()
   const { isLoading } = useSelector(state => state.auth)
 
-  const loginHandle = (e) => {
+  const loginHandle = async (e) => {
     e.preventDefault();
-    dispatch(loginUserStart())
+    dispatch(signUserStart())
+    const user = { email, password }
+
+    try {
+      const response = await AuthService.userLogin(user)
+      dispatch(signUserSuccess(response.user))
+    } catch (error) {
+      dispatch(signUserFailure(error.response.data.errors))
+    }
   }
 
   return (
@@ -26,7 +35,7 @@ function Login() {
           <Input label={"Password"} type={"password"} state={password} setState={setPassword} />
 
           <button className="btn btn-primary w-100 py-2 mt-2" type="submit" disabled={isLoading} onClick={loginHandle}>
-            { isLoading ? "loading..." : "Login"}
+            {isLoading ? "loading..." : "Login"}
           </button>
         </form>
       </main>
