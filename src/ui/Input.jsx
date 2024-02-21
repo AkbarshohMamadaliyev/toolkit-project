@@ -4,9 +4,9 @@ function Input({ label, state, setState, type = "text" }) {
       <input
         type={type}
         className="form-control"
+        autoComplete="on"
         value={state}
         onChange={e => setState(e.target.value)}
-        id="floatingInput"
         placeholder={label} />
       <label htmlFor="floatingInput">{label}</label>
     </div>
