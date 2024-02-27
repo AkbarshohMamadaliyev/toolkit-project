@@ -1,7 +1,8 @@
-import { Routes, Route } from "react-router-dom"
-import { Main, Login, Register, Navbar } from "./components"
+import { Routes, Route } from "react-router-dom";
+import { Main, Login, Register, Navbar } from "./components";
 
 function App() {
+
   return (
     <div>
       <Navbar />
